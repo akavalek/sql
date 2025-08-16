@@ -9,7 +9,7 @@ select * from customer;
 
 /* 2. Write a query that displays all of the columns and 10 rows from the customer table, 
 sorted by customer_last_name, then customer_first_ name. */
-select * from customer sort by customer_last_name, customer_first_name limit 10;
+select * from customer order by customer_last_name, customer_first_name limit 10;
 
 
 
@@ -35,7 +35,7 @@ from customer_purchases where vendor_id <=10 and vendor_id >=8;
 -- option 2
 select *
 ,(quantity * cost_to_customer_per_qty) as price
-from customer_purchases where vendor_id between (8,10);
+from customer_purchases where vendor_id between 8 and 10;
 
 --CASE
 /* 1. Products can be sold by the individual unit or by bulk measures like lbs. or oz. 
@@ -102,12 +102,13 @@ of customers for them to give stickers to, sorted by last name, then first name.
 
 HINT: This query requires you to join two tables, use an aggregate function, and use the HAVING keyword. */
 select 
-c.customer_last_name
+c.customer_id
+,c.customer_last_name
 ,c.customer_first_name
 ,sum(cp.quantity * cp.cost_to_customer_per_qty) as spend
 from customer c
-inner join customer_purchases cp on c.customer_id = cp.customer_id
-group by c.customer_last_name, c.customer_first_name
+left join customer_purchases cp on c.customer_id = cp.customer_id
+group by c.customer_id
 having spend > 2000
 order by c.customer_last_name, c.customer_first_name;
 
